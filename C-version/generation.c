@@ -9,11 +9,11 @@
 
 // --[CONFIG]--
 
-static const float RESOLUTION_MULTIPLIER = 0.5f;
+static const float RESOLUTION_MULTIPLIER = 1.0f;
 static const float SIMULATION_PRECISION_MULTIPLIER = 1.0f;
 
 static const unsigned int NUM_CPU_THREADS = 12;
-static const unsigned int NUM_THREADS_PER_CPU_THREADS = 1;
+static const unsigned int NUM_THREADS_PER_CPU_THREADS = 2;
 
 // Calculated
 static const unsigned int NUM_THREADS =
@@ -68,22 +68,6 @@ void writePng(const string name, const color image[]) {
   TinyPngOut_init(&pngout, WIDTH, HEIGHT, file);
   TinyPngOut_write(&pngout, (uint8_t *)image, WIDTH * HEIGHT);
   fclose(file);
-}
-
-point calculateGravity(point point) {
-  float dx = 0;
-  float dy = 0;
-
-  for (unsigned int i = 0; i < sizeof(attractors) / sizeof(attractor); i++) {
-    const attractor attractor = attractors[i];
-    const float distanceX = attractor.x - point.x;
-    const float distanceY = attractor.y - point.y;
-    float distance = sqrtf(powf(distanceX, 2.0f) + powf(distanceY, 2.0f));
-
-    const float attractionStrength = attractor.strength / powf(distance, 2.0f);
-    dx += distanceX * attractionStrength * ITERATION_DURATION_SQUARED;
-    dy += distanceY * attractionStrength * ITERATION_DURATION_SQUARED;
-  }
 }
 
 color calculateColor(point point) {
